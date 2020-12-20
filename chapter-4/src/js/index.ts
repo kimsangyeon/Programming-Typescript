@@ -63,15 +63,37 @@ let reserve: Reserve = (
 // 4. 94쪽 한정된 다형성으로 이수의 개수 정하기에서 소개한 call 함수에서 두 번째 인수가 string인 함수여야 정상 동작하도록 구현을 바꿔보자.
 //    이를 제외한 모든 함수는 컴파일 타임에 에러를 발생시켜야 한다.
 
-function call<T extends unknown[], R> (
+function call<T extends [unknown, string, ...unknown[]], R> (
   f: (...args: T) => R,
   ...args: T
 ): R {
   return f(...args);
 }
 
-function fill(value: string, length: number): string[] {
+function fill(length: number, value: string): string[] {
   return Array.from({ length }, () => value);
 }
 
-let a = call(fill, 'a', 10);
+let a = call(fill, 10, 'a');
+
+
+
+// 5. 타입 안전성을 지원하는 작은 어서션(assertion) 라이브러리 is를 구현해보자.
+//    먼저 어떤 타입들을 지원할지 구상해보고, 다음처럼 사용할 수 있도록 만들어보자.
+
+function is<T> (
+  a: T,
+  ...b: [T, ...T[]]
+): boolean {
+  return b.every(_ => _ === a);
+}
+
+is('string', 'otherstring') // false
+
+is(true, false) // false
+
+is(42, 42) // true
+
+is(10, 'foo') // 에러 TS2345: foo 타입의 인수를 number 타입의 매개변수에 할당할 수 없음
+
+is([1], [1, 2], [1, 2, 3]) // false
