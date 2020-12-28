@@ -78,3 +78,14 @@ type O = {a: {b: {c: string}}}
 type P = keyof O // 'a'
 type Q = O['a']['b'] // {c: string}
 
+
+/**
+ * 3. T나 U에 속하지만 둘 다에는 속하지 않는 타입을 구하는 Exclusive<T, U>를 구현하자.
+ *    예를 들어 Exclusie<1 | 2 | 3, 2 | 3 | 4>의 결과는 1 | 4 다.
+ *    타입 검사기가 Exclusive<1 | 2, 2 | 4>를 어떻게 평가하는지 단계별로 서술하자.
+ */
+
+type Exclusive<T, U> = Exclude<T, U> | Exclude<U, T>
+
+type R = Exclusive<1 | 2 | 3, 2 | 3 | 4> // 1 | 4
+type U = Exclusive<1 | 2, 2 | 4> // 1 | 4
