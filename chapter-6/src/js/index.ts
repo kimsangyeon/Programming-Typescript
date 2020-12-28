@@ -89,3 +89,20 @@ type Exclusive<T, U> = Exclude<T, U> | Exclude<U, T>
 
 type R = Exclusive<1 | 2 | 3, 2 | 3 | 4> // 1 | 4
 type U = Exclusive<1 | 2, 2 | 4> // 1 | 4
+
+/**
+ * 4. 6.6.3 확실한 할당 어서션에서 소개한 예제를 확실한 할당 어서션을 사용하지 않도록 재구현하자.
+ */
+
+let globalCache = {
+  get(key: string) {
+    return 'user'
+  }
+}
+
+function fetchUser() {
+  return globalCache.get('userId')
+}
+
+let userId = fetchUser()
+userId.toUpperCase()
