@@ -68,3 +68,13 @@ enum F {
 let l: F.X
 l = E.X as E.X
 
+
+/**
+ * 2. type O = {a: {b: {c: string}}}라는 객체 타입이 있을 때 keyof O는 무슨 타입을 반환할까?
+ *    O['a']['b']는 무슨 타입인가?
+ */
+
+type O = {a: {b: {c: string}}}
+type P = keyof O // 'a'
+type Q = O['a']['b'] // {c: string}
+
